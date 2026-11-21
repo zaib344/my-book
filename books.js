@@ -83,11 +83,13 @@ const books = [
   { title: "The Book Thief", author: "Markus Zusak", year: 2005, category: "Fiction" },
 
   // NON-FICTION
+  
   { title: "The Psychology of Money", author: "Morgan Housel", year: 2020, category: "Non-Fiction" },
   { title: "Rich Dad Poor Dad", author: "Robert T. Kiyosaki", year: 1997, category: "Non-Fiction" },
-  { title: "Atomic Habits", author: "James Clear", year: 2018, category: "Non-Fiction" }
+  { title: "Atomic Habits", author: "James Clear", year: 2018, category: "Non-Fiction" },
+  { title: "Tuesdays with Morrie", author: "Mitch Albom", year: 1997, category: "Non-Fiction" },
+  { title: "The Laws of\nHuman Nature", author: "Robert Greene", year: 2018, category: "Non-Fiction" }
 ];
-
 
 // SPINE COLOUR PALETTES
 // [Dark side, Light side, Text colour]
