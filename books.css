@@ -1,0 +1,610 @@
+/* =================================
+   1. GLOBAL SETTINGS
+================================= */
+:root {
+    --cream: #f8f6f0;
+    --paper: #fffdf8;
+    --ink: #29241f;
+    --muted: #8d8276;
+    --brown: #80634e;
+    --line: #e6dfd5;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+}
+
+/* =================================
+   2. MAIN LIBRARY
+================================= */
+.library {
+    max-width: 1500px;
+    margin: auto;
+    padding: 75px 5% 30px;
+}
+
+/* =================================
+   3. HEADER
+================================= */
+header {
+    margin-bottom: 65px;
+}
+
+.eyebrow {
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--muted);
+    margin-bottom: 20px;
+}
+
+header h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(45px, 7vw, 82px);
+    font-weight: 400;
+    font-style: italic;
+    letter-spacing: -2px;
+    margin-bottom: 20px;
+}
+
+.library-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    flex-wrap: wrap;
+}
+
+#book-count {
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--muted);
+}
+
+#recommend-btn {
+    background: transparent;
+    border: 1px solid var(--line);
+    border-radius: 30px;
+    padding: 9px 18px;
+    font-size: 9px;
+    letter-spacing: 1px;
+    color: var(--ink);
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+#recommend-btn:hover {
+    background: var(--ink);
+    color: white;
+}
+
+.recommendation {
+    min-height: 30px;
+    margin-top: 18px;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 22px;
+    color: var(--brown);
+}
+
+/* =================================
+   4. SEARCH AND FILTERS
+================================= */
+.search-section {
+    margin-bottom: 65px;
+}
+
+#search-input {
+    width: min(100%, 480px);
+    padding: 14px 10px;
+    border: none;
+    border-bottom: 1px solid var(--line);
+    outline: none;
+    background: transparent;
+    text-align: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 25px;
+    font-style: italic;
+    color: var(--ink);
+}
+
+#search-input::placeholder {
+    color: #a69b8f;
+}
+
+#search-input:focus {
+    border-bottom-color: var(--brown);
+}
+
+.filters {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 9px;
+    margin-top: 25px;
+}
+
+.filter {
+    padding: 8px 16px;
+    border: 1px solid var(--line);
+    border-radius: 25px;
+    background: transparent;
+    font-size: 9px;
+    letter-spacing: 1px;
+    color: var(--muted);
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.filter:hover,
+.filter.active {
+    background: var(--ink);
+    color: white;
+    border-color: var(--ink);
+}
+
+/* =================================
+   5. CATEGORY SHELVES
+================================= */
+.bookshelf-section {
+    width: 100%;
+}
+
+.genre-shelf {
+    margin: 0 0 58px;
+}
+
+.genre-heading {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 34px;
+    font-weight: 400;
+    font-style: italic;
+    margin: 0 0 18px 4px;
+    color: var(--ink);
+}
+
+.bookshelf-row {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+    flex-wrap: nowrap;              /* all books stay on ONE line */
+    gap: clamp(1px, 0.5vw, 7px);    /* gap shrinks on small screens */
+    min-height: 260px;
+    padding: 25px clamp(4px, 1.5vw, 15px) 0;
+    border-bottom: 8px solid #c5a98c;
+    box-shadow: 0 5px 8px rgba(75, 54, 36, 0.12);
+}
+
+
+/* =================================
+   6. INDIVIDUAL BOOKS
+================================= */
+.book {
+    position: relative;
+    flex: 1 1 0;                            /* books share the row equally */
+    min-width: 0;                           /* allows shrinking */
+    max-width: 42px;                        /* never wider than on desktop */
+    height: clamp(150px, 45vw, 205px);      /* height scales with the screen */
+    overflow: visible;
+    border-radius: 3px 3px 0 0;
+    cursor: pointer;
+    transform-origin: bottom center;
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+    background: #8c7662;
+    box-shadow: inset 3px 0 rgba(255,255,255,0.2),
+                inset -3px 0 rgba(0,0,0,0.12);
+}
+
+.book:hover,
+.book:focus {
+    transform: translateY(-22px) rotate(-2deg);
+    box-shadow: 4px 8px 12px rgba(0,0,0,0.2);
+    z-index: 10;
+    outline: none;
+}
+
+/* Optional real spine photo (add an "image" field to a book in books.js) */
+.book-spine-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+    border-radius: 3px 3px 0 0;
+}
+
+/* Text spine: shown whenever a book has no photo */
+.book-title,
+.book-author {
+    display: none;
+}
+
+.book.no-spine-image .book-title,
+.book.no-spine-image .book-author {
+    display: block;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    writing-mode: vertical-rl;
+    white-space: nowrap;
+    color: var(--ink-color, rgba(255,255,255,.92));
+    text-shadow: 0 1px 2px rgba(0,0,0,.25);
+}
+
+.book.no-spine-image .book-title {
+    top: 12px;
+    max-height: 145px;
+    overflow: hidden;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .7px;
+}
+
+.book.no-spine-image .book-author {
+    bottom: 9px;
+    max-height: 75px;
+    overflow: hidden;
+    font-size: 7px;
+}
+
+/* =================================
+   7. HOVER INFORMATION CARD
+================================= */
+.book-info {
+    position: absolute;
+    bottom: 76%;
+    left: 20px;
+    width: 235px;
+    padding: 20px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+    z-index: 30;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .2s ease, visibility .2s ease;
+    pointer-events: none;
+    border-radius: 2px;
+}
+
+/* Books near the right edge show the card on their left instead */
+.book.flip .book-info {
+    left: auto;
+    right: 20px;
+}
+
+.book:hover .book-info,
+.book:focus .book-info {
+    opacity: 1;
+    visibility: visible;
+}
+
+.book-info h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    line-height: 1.1;
+    margin-bottom: 8px;
+}
+
+.book-info p {
+    font-size: 11px;
+    color: var(--muted);
+    margin: 5px 0;
+}
+
+.empty-message {
+    width: 100%;
+    text-align: center;
+    padding: 50px 10px;
+    color: var(--muted);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+}
+
+/* =================================
+   8. FOOTER
+================================= */
+footer {
+    margin-top: 70px;
+    padding: 20px;
+}
+
+footer p {
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: var(--muted);
+}
+
+/* =================================
+   9. RESPONSIVE DESIGN
+================================= */
+/* =================================
+   9. RESPONSIVE DESIGN
+================================= */
+@media (max-width: 768px) {
+    .library {
+        padding: 55px 10px 20px;
+    }
+
+    header {
+        margin-bottom: 50px;
+    }
+
+    header h1 {
+        letter-spacing: -1px;
+    }
+
+    .search-section {
+        margin-bottom: 50px;
+    }
+
+    .genre-heading {
+        font-size: 29px;
+    }
+
+    .bookshelf-row {
+        justify-content: center;
+        min-height: 220px;
+    }
+
+    .book.no-spine-image .book-title {
+        font-size: 9px;
+        letter-spacing: .3px;
+    }
+
+    .book.no-spine-image .book-author {
+        font-size: 6px;
+    }
+
+    .book-info {
+        width: 210px;
+        padding: 16px;
+    }
+}
+
+@media (max-width: 400px) {
+    .filters {
+        gap: 6px;
+    }
+
+    .filter {
+        padding: 7px 11px;
+        font-size: 8px;
+    }
+
+    .book.no-spine-image .book-title {
+        font-size: 8px;
+        letter-spacing: 0;
+    }
+
+    .book-info {
+        width: 190px;
+    }
+}
+
+/* KEEP ALL BOOKS IN ONE STRAIGHT HORIZONTAL ROW */
+
+.bookshelf-row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap !important;
+    justify-content: flex-start;
+    align-items: flex-end;
+    gap: 10px;
+
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    padding: 20px 10px 15px;
+    box-sizing: border-box;
+
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* PREVENT BOOKS FROM MOVING TO ANOTHER ROW */
+
+
+/* =================================
+   5. CATEGORY SHELVES
+================================= */
+
+.bookshelf-section {
+    width: 100%;
+}
+
+.genre-shelf {
+    width: 100%;
+    margin-bottom: 58px;
+    overflow: hidden;
+}
+
+.genre-heading {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 34px;
+    font-weight: 400;
+    font-style: italic;
+    margin: 0 0 18px 4px;
+    color: var(--ink);
+}
+
+/* ONE HORIZONTAL ROW PER CATEGORY */
+
+.bookshelf-row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: flex-end;
+    gap: 10px;
+
+    width: 100%;
+    min-height: 260px;
+
+    padding: 25px 10px 15px;
+
+    border-bottom: 8px solid #c5a98c;
+    box-shadow: 0 5px 8px rgba(75, 54, 36, 0.12);
+
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* =================================
+   6. INDIVIDUAL BOOKS
+================================= */
+
+.book {
+    position: relative;
+
+    flex: 0 0 54px;
+    width: 54px;
+    min-width: 54px;
+    max-width: 54px;
+    flex-shrink: 0;
+
+    height: 205px;
+
+    overflow: visible;
+    border-radius: 3px 3px 0 0;
+
+    cursor: pointer;
+    transform-origin: bottom center;
+
+    transition: transform 0.35s ease,
+                box-shadow 0.35s ease;
+
+    background: #8c7662;
+
+    box-shadow:
+        inset 3px 0 rgba(255,255,255,0.2),
+        inset -3px 0 rgba(0,0,0,0.12);
+}
+
+.book:hover,
+.book:focus {
+    transform: translateY(-15px);
+    box-shadow: 4px 8px 12px rgba(0,0,0,0.2);
+    z-index: 10;
+    outline: none;
+}
+
+/* BOOK IMAGES */
+
+.book-spine-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+    border-radius: 3px 3px 0 0;
+}
+
+/* BOOK TEXT */
+
+.book-title,
+.book-author {
+    display: none;
+}
+
+.book.no-spine-image .book-title,
+.book.no-spine-image .book-author {
+    display: block;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    writing-mode: vertical-rl;
+    white-space: nowrap;
+    color: var(--ink-color, rgba(255,255,255,.92));
+    text-shadow: 0 1px 2px rgba(0,0,0,.25);
+}
+
+.book.no-spine-image .book-title {
+    top: 12px;
+    max-height: 145px;
+    overflow: hidden;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.book.no-spine-image .book-author {
+    bottom: 9px;
+    max-height: 75px;
+    overflow: hidden;
+    font-size: 7px;
+}
+
+/* =================================
+   7. BOOK INFORMATION
+================================= */
+
+.book-info {
+    position: absolute;
+    bottom: 76%;
+    left: 20px;
+    width: 235px;
+    padding: 20px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+    z-index: 30;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .2s ease, visibility .2s ease;
+    pointer-events: none;
+    border-radius: 2px;
+}
+
+.book.flip .book-info {
+    left: auto;
+    right: 20px;
+}
+
+.book:hover .book-info,
+.book:focus .book-info {
+    opacity: 1;
+    visibility: visible;
+}
+
+.book-info h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    line-height: 1.1;
+    margin-bottom: 8px;
+}
+
+.book-info p {
+    font-size: 11px;
+    color: var(--muted);
+    margin: 5px 0;
+}
+
+.empty-message {
+    width: 100%;
+    text-align: center;
+    padding: 50px 10px;
+    color: var(--muted);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+}
+
+
+/* KEEP EACH CATEGORY ON ITS OWN SHELF */
+
+.genre-shelf {
+    width: 100%;
+    min-width: 0;
+    overflow: hidden;
+}
